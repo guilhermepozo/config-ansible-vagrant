@@ -1,0 +1,19 @@
+- name: install apache2 and php
+  apt: name={{item}} state=latest
+  with_items:
+    - apache2
+    - php
+    - python-mysqldb
+    - php-cli
+    - php-common
+    - php-gd
+    - php-mysql
+    - php-mbstring
+    - php-intl
+    - php-xml
+    - php-zip
+    - php-pear
+    - libapache2-mod-php
+
+- name: Start Apache service 
+  service: name=apache2 state=started enabled=yes

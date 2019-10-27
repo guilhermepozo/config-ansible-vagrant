@@ -1,0 +1,23 @@
+- name: Install mysql
+  apt: pkg={{ item }} state=installed
+  become: true
+  with_items:    
+    - mysql-server
+    - python-mysqldb
+
+- name : Ensure mysql started
+  become: yes
+  service: name=mysql state=started enabled=yes
+
+- name: Create mysql database
+  mysql_db: name={{ wp_mysql_db }} state=present
+  become: yes
+
+- name: Create mysql user
+  mysql_user: 
+    host={{ wp_mysql_host }}
+    name={{ wp_mysql_user }}
+    host={{ wp_mysql_host }}
+    password={{ wp_mysql_password }} 
+    priv=*.*:ALL
+  become: yes  
