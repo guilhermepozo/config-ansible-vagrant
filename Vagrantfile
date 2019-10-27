@@ -1,6 +1,6 @@
 hosts = [{name: "workspace", ip:"192.168.56.65"},{name: "web", ip:"192.168.56.66"},{name: "database",ip:"192.168.56.67"}]
 
-pubkeypath = "C:\\vagrant\\shared\\ssh\\public"
+pubkeypath = "C:\\Users\\guilh\\config-ansible-vagrant\\shared\\ssh\\public"
 
 Vagrant.configure("2") do |config|
 
@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
         config.vm.define host[:name] do |node|            
             node.vm.hostname = host[:name]
             
-            node.vm.network "forwarded_port", guest: 80, host: 8080 if host[:name] == "web"
+            node.vm.network "forwarded_port", guest: 80, host: 7070 if host[:name] == "web"
             
             node.vm.box ="ubuntu/bionic64"
 
@@ -31,7 +31,6 @@ Vagrant.configure("2") do |config|
             end            
         end        
     end
-
     config.vm.define "workspace" do |node|
         node.vm.provision "shell" do |s|
             ssh_pub_key = File.readlines(pubkeypath).first.strip
@@ -44,7 +43,7 @@ Vagrant.configure("2") do |config|
                 echo "export ANSIBLE_HOST_KEY_CHECKING=0" >> /home/vagrant/.bashrc
                 cp /home/vagrant/shared/ssh/private /home/vagrant/.ssh/
                 cat /home/vagrant/shared/ansible/inventories/hosts >> /etc/ansible/hosts
-                chmod 600 /home/vagrant/.ssh/private
+                sudo chmod 644 /home/vagrant/.ssh/private
             SHELL
         end 
     end

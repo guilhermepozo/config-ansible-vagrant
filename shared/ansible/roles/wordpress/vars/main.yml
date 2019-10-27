@@ -1,2 +1,11 @@
----
-# vars file for wordpress
+mysql:
+  root:
+    db: wordpress
+    user: root
+    password: root
+    host: 192.168.56.67
+  wordpress:
+    db: wordpress
+    user: wordpress
+    password: wordpress
+    host: 192.168.56.67

@@ -10,14 +10,34 @@
   service: name=mysql state=started enabled=yes
 
 - name: Create mysql database
-  mysql_db: name={{ wp_mysql_db }} state=present
+  mysql_db: name={{wp.db }} state=present
   become: yes
 
-- name: Create mysql user
+- name: update root password for all accounts
   mysql_user: 
-    host={{ wp_mysql_host }}
-    name={{ wp_mysql_user }}
-    host={{ wp_mysql_host }}
-    password={{ wp_mysql_password }} 
-    priv=*.*:ALL
+    name: "{{ root.name }}"
+    host: "{{ item }}"
+    login_user: "{{ root.login }}"
+    login_password: "{{ root.password }}"
+    check_implicit_admin: yes
+    priv: "*.*:ALL"
+  with_items:
+    - "{{ root.host }}"
+    - 127.0.0.1
+    - ::1
+    - localhost 
+  become: yes  
+
+- name: Create mysql wordpress user
+  mysql_user: 
+    name: "{{ wp.name }}"
+    host: "{{ item }}"
+    login_user: "{{ wp.login }}"
+    login_password: "{{ wp.password }}"
+    priv: "*.*:ALL"
+  with_items:
+    - "{{ wp.host }}"
+    - 127.0.0.1
+    - ::1
+    - localhost 
   become: yes  
