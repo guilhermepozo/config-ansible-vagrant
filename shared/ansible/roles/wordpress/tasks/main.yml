@@ -28,8 +28,8 @@
     regexp="{{ item.regexp }}"
     line="{{ item.line }}"
   with_items:
-    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{mysql.db}}');"}        
-    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{mysql.user}}');"}        
-    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{mysql.password}}');"}
-    - {'regexp': "define\\('DB_HOST', '(.)+'\\);", 'line': "define('DB_HOST', '{{mysql.host}}');"}
+    - {'regexp': "define\\('DB_NAME', '(.)+'\\);", 'line': "define('DB_NAME', '{{db}}');"}        
+    - {'regexp': "define\\('DB_USER', '(.)+'\\);", 'line': "define('DB_USER', '{{wp.login}}');"}        
+    - {'regexp': "define\\('DB_PASSWORD', '(.)+'\\);", 'line': "define('DB_PASSWORD', '{{wp.password}}');"}
+    - {'regexp': "define\\('DB_HOST', '(.)+'\\);", 'line': "define('DB_HOST', '{{wp.host}}');"}
   become: yes

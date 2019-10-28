@@ -5,11 +5,13 @@ pubkeypath = "C:\\Users\\guilh\\config-ansible-vagrant\\shared\\ssh\\public"
 Vagrant.configure("2") do |config|
 
     hosts.each do |host|
-        config.vm.define host[:name] do |node|            
+        config.vm.define host[:name] do |node|      
+            name = host[:name]
+      
             node.vm.hostname = host[:name]
             
-            node.vm.network "forwarded_port", guest: 80, host: 7070 if host[:name] == "web"
-            
+            node.vm.network "forwarded_port", guest: 80, host: 7070 if name == "web"
+
             node.vm.box ="ubuntu/bionic64"
 
             node.vm.network "private_network",
@@ -19,8 +21,7 @@ Vagrant.configure("2") do |config|
             node.vm.provider :virtualbox do |vb|
                 vb.name = host[:name]
             end
-            testing = host[:name]
-            config.vm.synced_folder "shared/", "/home/vagrant/shared" if testing == "workspace"
+            config.vm.synced_folder "shared/", "/home/vagrant/shared" if name == "workspace"
 
             config.vm.provision "shell" do |s|
                 ssh_pub_key = File.readlines(pubkeypath).first.strip

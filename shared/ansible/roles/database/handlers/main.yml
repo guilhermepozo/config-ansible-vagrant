@@ -1,2 +1,5 @@
 ---
-# handlers file for database
+# handlers file for wordpress
+- name: restart mysql
+  service: name=mysql state=restarted
+  become: yes
