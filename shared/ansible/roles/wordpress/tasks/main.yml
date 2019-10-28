@@ -18,20 +18,8 @@
   notify:
     - restart apache
 
-- name: Copy sample config file
-  command: mv /var/www/wordpress/wp-config-sample.php /var/www/wordpress/wp-config.php creates=/var/www/wordpress/wp-config.php
-  become: yes
-
-- name: Update WordPress config file
-  lineinfile:
-    dest=/var/www/wordpress/wp-config.php
-    regexp="{{ item.regexp }}"
-    line="{{ item.line }}"
-  with_items:
-    - {'regexp': "database_name_here", 'line': "{{db}}"}        
-    - {'regexp': "username_here", 'line': "{{wp.login}}"}        
-    - {'regexp': "password_here', '(.)+'\\);", 'line': "{{wp.password}}"}
-    - {'regexp': "localhost", 'line': "{{ wp.host }}"}
+- name: Copy WordPress config file
+  template: src=wp-config.php dest=/var/www/wordpress/ force=yes
   become: yes
   notify:
   - restart apache
