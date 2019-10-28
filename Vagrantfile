@@ -1,6 +1,6 @@
 hosts = [{name: "workspace", ip:"192.168.56.65"},{name: "web", ip:"192.168.56.66"},{name: "database",ip:"192.168.56.67"}]
 
-pubkeypath = "C:\\Users\\guilh\\config-ansible-vagrant\\shared\\ssh\\public"
+pubkeypath = "shared\\ssh\\public"
 
 Vagrant.configure("2") do |config|
 
