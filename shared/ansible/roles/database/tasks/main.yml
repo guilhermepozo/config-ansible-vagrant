@@ -8,7 +8,10 @@
   become: true
 
 - name: Copy the root credentials as .my.cnf file
-  template: src=root.cnf.j2 dest=~/.my.cnf mode=0600
+  template: 
+    src: root.cnf.j2 
+    dest: ~/.my.cnf 
+    mode: 0600
    
 - name: Update mysql cnf file to allow remote connections
   lineinfile:
