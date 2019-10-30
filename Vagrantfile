@@ -43,7 +43,7 @@ Vagrant.configure("2") do |config|
                 
                 echo "export ANSIBLE_HOST_KEY_CHECKING=0" >> /home/vagrant/.bashrc
                 cp /home/vagrant/shared/ssh/private /home/vagrant/.ssh/
-                cat /home/vagrant/shared/ansible/inventories/hosts >> /etc/ansible/hosts
+                cat /home/vagrant/shared/ansible/inventory/hosts >> /etc/ansible/hosts
                 sudo chmod 644 /home/vagrant/.ssh/private
             SHELL
         end 
