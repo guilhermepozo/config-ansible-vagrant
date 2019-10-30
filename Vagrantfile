@@ -51,11 +51,11 @@ Vagrant.configure("2") do |config|
         node.vm.provision "shell" do |s|
             s.inline = <<-SHELL
                 # ATUALIZANDO PACOTES DO SISTEMA OPERACIONAL
-                sudo apt update
+                apt update
                 # INSTALAÇÃO DO ANSIBLE
-                sudo apt install software-properties-common
-                sudo apt-add-repository --yes --update ppa:ansible/ansible
-                sudo apt install ansible -y                
+                apt install software-properties-common
+                apt-add-repository --yes --update ppa:ansible/ansible
+                apt install ansible -y                
                 # IGNORAR CONFIRMAÇÃO MANUAL NO TERMINAL DE CONFIAÇA DE CHAVES NO MOMENTO DO SSH 
                 echo "export ANSIBLE_HOST_KEY_CHECKING=0" >> /home/vagrant/.bashrc
                 # COPIAR CHAVE PRIVADA PARA LOCAL PADRÃO SSH
@@ -63,7 +63,7 @@ Vagrant.configure("2") do |config|
                 # COPIAR ARQUIVO DE HOSTS PARA LOCAL PADRÃO DO ANSIBLE
                 cat /home/vagrant/shared/ansible/inventory/hosts >> /etc/ansible/hosts
                 # ALTERAR PERMISSIONAMENTO DA CHAVE PRIVADA PARA SSH
-                sudo chmod 644 /home/vagrant/.ssh/private
+                chmod 644 /home/vagrant/.ssh/private
             SHELL
         end 
     end
