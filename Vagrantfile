@@ -1,4 +1,4 @@
-# DECLARAR OBJETO USADO COM INFORMAÇÕES DAS MÁQUINAS VIRTUAIS A SEREM CRIADAS 
+# DECLARAR ARRAY DE OBJETOS COM INFORMAÇÕES DAS MÁQUINAS VIRTUAIS QUE SERÃO CRIADAS 
 hosts = [{name: "workspace", ip:"192.168.56.65"},{name: "web", ip:"192.168.56.66"},{name: "database",ip:"192.168.56.67"}]
 
 # DECLARAR CAMINHO DA CHAVE PÚBLICA
@@ -10,6 +10,9 @@ Vagrant.configure("2") do |config|
         config.vm.define host[:name] do |node|  
             # VARIÁVEL AUXILIAR COM O NOME USADO COMO HOST    
             name = host[:name]
+
+            # BOX USADA COMO BASE - https://app.vagrantup.com/boxes/search
+            node.vm.box ="ubuntu/bionic64"
             
             # CONFIGURANDO HOSTNAME COM NOME DECLARADO ANTERIORMENTE (OBJETO hosts - LINHA 2) 
             node.vm.hostname = host[:name]
@@ -17,15 +20,12 @@ Vagrant.configure("2") do |config|
             # REDIRECT DE PORTAS CASO NOME DA MÁQUINA SEJA "web"
             node.vm.network "forwarded_port", guest: 80, host: 7070 if name == "web"
 
-            # BOX USADA COMO BASE - https://app.vagrantup.com/boxes/search
-            node.vm.box ="ubuntu/bionic64"
-
-            # CRIANDO REDE PRIVADA E ATRIBUINDO IP DECLARADO ANTERIORMENTE (OBJETO "hosts" - LINHA 2) 
+            # CRIANDO REDE PRIVADA E ATRIBUINDO IP DECLARADO ANTERIORMENTE (ARRAY DE OBJETOS "hosts" - LINHA 2) 
             node.vm.network "private_network",
                 ip: host[:ip],
                 netmask:"255.255.255.0"
 
-            # CONFIGURANDO NOME COM NOME DECLARADO ANTERIORMENTE (OBJETO hosts - LINHA 2) 
+            # CONFIGURANDO NOME COM NOME DECLARADO ANTERIORMENTE (ARRAY DE OBJETOS "hosts" - LINHA 2) 
             node.vm.provider :virtualbox do |vb|
                 vb.name = host[:name]
             end
@@ -63,7 +63,7 @@ Vagrant.configure("2") do |config|
                 # COPIAR ARQUIVO DE HOSTS PARA LOCAL PADRÃO DO ANSIBLE
                 cat /home/vagrant/shared/ansible/inventory/hosts >> /etc/ansible/hosts
                 # ALTERAR PERMISSIONAMENTO DA CHAVE PRIVADA PARA SSH
-                chmod 644 /home/vagrant/.ssh/private
+                chmod 600 /home/vagrant/.ssh/private
             SHELL
         end 
     end
