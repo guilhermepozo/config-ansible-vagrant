@@ -8,7 +8,7 @@ Vagrant.configure("2") do |config|
     # LOOP PARA CRIAR MÁQUINAS DECLARADAS NO OBJETO "hosts" (LINHA 2)
     hosts.each do |host|
         config.vm.define host[:name] do |node|  
-            # VARIÁVEL AUXILIAR COM O NOME USADO COMO HOST    
+            # VARIÁVEL AUXILIAR COM O NOME, SERÁ USADA PARA REALIZAR AS CONDIÇÕES
             name = host[:name]
 
             # BOX USADA COMO BASE - https://app.vagrantup.com/boxes/search
@@ -21,9 +21,7 @@ Vagrant.configure("2") do |config|
             node.vm.network "forwarded_port", guest: 80, host: 7070 if name == "web"
 
             # CRIANDO REDE PRIVADA E ATRIBUINDO IP DECLARADO ANTERIORMENTE (ARRAY DE OBJETOS "hosts" - LINHA 2) 
-            node.vm.network "private_network",
-                ip: host[:ip],
-                netmask:"255.255.255.0"
+            node.vm.network "private_network", ip: host[:ip]
 
             # CONFIGURANDO NOME COM NOME DECLARADO ANTERIORMENTE (ARRAY DE OBJETOS "hosts" - LINHA 2) 
             node.vm.provider :virtualbox do |vb|
@@ -33,8 +31,7 @@ Vagrant.configure("2") do |config|
             # CRIANDO PASTA COMPARTILHADA ENTRE SUA MÁQUINA E MÁQUINA VIRTUAL CASO NOME DA MÁQUINA SEJA "workspace"
             config.vm.synced_folder "shared/", "/home/vagrant/shared" if name == "workspace"
 
-
-            # INSERINDO CHAVE PESSOAL NO SISTEMA OPERACIONAL PARA SSH 
+            # INSERINDO CHAVE PÚBLICA NO SISTEMA OPERACIONAL PARA SSH 
             config.vm.provision "shell" do |s|
                 # LER ARQUIVO DE CHAVE PUBLICA (RUBY)
                 ssh_pub_key = File.readlines(pubkeypath).first.strip
@@ -63,7 +60,7 @@ Vagrant.configure("2") do |config|
                 # COPIAR ARQUIVO DE HOSTS PARA LOCAL PADRÃO DO ANSIBLE
                 cat /home/vagrant/shared/ansible/inventory/hosts >> /etc/ansible/hosts
                 # ALTERAR PERMISSIONAMENTO DA CHAVE PRIVADA PARA SSH
-                chmod 600 /home/vagrant/.ssh/private
+                chmod 644 /home/vagrant/.ssh/private
             SHELL
         end 
     end

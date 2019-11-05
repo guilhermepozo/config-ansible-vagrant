@@ -4,12 +4,12 @@
       - python-mysqldb
       - mysql-server
       - libmysqlclient-dev
-    state: installed
+    state: latest
   become: true
 
 - name: Copy the root credentials as .my.cnf file
   template: 
-    src: root.cnf.j2 
+    src: ./templates/root.cnf.j2 
     dest: ~/.my.cnf 
     mode: 0600
    
