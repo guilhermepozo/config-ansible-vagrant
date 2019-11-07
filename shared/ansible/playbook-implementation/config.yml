@@ -1,10 +1,10 @@
+---
 - hosts: server 
-  gather_facts: false
   become: yes
   tasks:
-    - name: install apache2 and php  
+    - name: install apache2 and php
       apt:
-        name: 
+        name:
           - apache2
           - php
           - python-mysqldb
@@ -16,131 +16,139 @@
           - libapache2-mod-php
         state: latest
         update_cache: true
-    - name: Start Apache service 
-      service: name=apache2 state=started enabled=yes
+    - name: Start Apache service
+      service:
+        name: apache2
+        state: started
+        enabled: yes
 
 - hosts: db
   vars:
+    con_hosts:
+    - 192.168.56.67
+    - 192.168.56.66
+    - 192.168.56.65
     db: wordpress
     root:
       name: root
       login: root
       password: root
-      host: 192.168.56.67
     wp:
       name: wordpress
       login: wordpress
       password: wordpress
-      host: 192.168.56.67
-  gather_facts: false
   become: yes
+  become_user: root
   tasks:
-    - name: Install mysql
+    - name: install mysql
       apt:
         name:
-          - python3-pip
-          - python-mysqldb
           - mysql-server
-          - libmysqlclient-dev
+          - python3-mysqldb
         update_cache: true
-        state: latest
-
-    - name: Make sure pymysql is present
-      pip:
-        name: pymysql
-        state: latest
-
+        state: latest 
+  
     - name: Copy the root credentials as .my.cnf file
-      template: 
-        src: ./templates/root.cnf.j2 
-        dest: ~/.my.cnf 
-        mode: 0600   
-
-    - name: Update mysql cnf file to allow remote connections
-      lineinfile:
-        dest=/etc/mysql/mysql.conf.d/mysqld.cnf
-        regexp="{{ item.regexp }}"
-        line="{{ item.line }}"
-      with_items:
-        - {'regexp': "bind-address", 'line': "#bind-address"}        
-      
-    - name: restart mysql
-      service: name=mysql state=restarted
-
-    - name : Ensure mysql started
-      service: name=mysql state=started enabled=yes
+      template:
+        src: ./templates/root.cnf.j2
+        dest: /root/my.cnf
+        owner: root
+        group: root
+        mode: 0600
 
     - name: update root password for all accounts
       mysql_user:
-        login_host: "{{ root.host }}"
-        login_user: "{{ root.login }}"
-        login_password: "{{ root.password }}"
         name: "{{ root.name }}"
         host: "{{ item }}"
+        password: "{{ root.password }}"
+        priv: "*.*:ALL,GRANT"
         state: present
+        check_implicit_admin: yes
       with_items:
-        - "{{ root.host }}"
+        - "{{ con_hosts }}"
         - 127.0.0.1
         - ::1
-        - localhost 
-        - 192.168.56.65
-        - 192.168.56.66
+        - localhost
 
-    - name: Create mysql database
-      become: yes
+    - name: Update mysql cnf file to allow remote connections
+      lineinfile:
+        dest: /etc/mysql/mysql.conf.d/mysqld.cnf
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - {'regexp': "bind-address", 'line': "bind-address  = 0.0.0.0"}
+
+    
+    - name: restart mysql
+      service:
+        name: mysql
+        state: restarted
+
+    - name : ensure mysql started
+      service: 
+        name: mysql
+        state: started
+        enabled: yes
+
+    - name: create mysql database
       mysql_db:
         login_user: "{{ root.login }}"
         login_password: "{{ root.password }}"
         name: "{{ db }}"
         state: present
 
-
-    - name: Create mysql wordpress user
-      mysql_user: 
+    - name: create mysql wordpress user
+      mysql_user:
+        login_user: "{{ root.login }}"
+        login_password: "{{ root.password }}"
         name: "{{ wp.name }}"
         host: "{{ item }}"
         password: "{{ wp.password }}"
-        login_user: "{{ root.login }}"
-        login_password: "{{ root.password }}"
         priv: "*.*:ALL"
       with_items:
-        - "{{ wp.host }}"
+        - "{{ con_hosts }}"
         - 127.0.0.1
         - ::1
         - localhost
-        - 192.168.56.65
-        - 192.168.56.66
-        - "%"
 
-- hosts: server 
+- hosts: server
   become: yes
   vars:
-    db: wordpress
+    db:
+      name: wordpress
+      host: 192.168.56.67
     wp:
       name: wordpress
       login: wordpress
       password: wordpress
-      host: 192.168.56.67
-  gather_facts: false
   tasks:
-    - name: Download WordPress
-      get_url: 
-        url=https://wordpress.org/latest.tar.gz 
-        dest=/tmp/wordpress.tar.gz
-        validate_certs=no
+    - name: download wordpress
+      get_url:
+        url: https://wordpress.org/latest.tar.gz
+        dest: /tmp/wordpress.tar.gz
+        validate_certs: no
 
-    - name: Extract WordPress
-      unarchive: src=/tmp/wordpress.tar.gz dest=/var/www/ copy=no
+    - name: extract wordpress
+      unarchive:
+        src: /tmp/wordpress.tar.gz
+        dest: /var/www/
+        copy: no
 
-    - name: Update default Apache site
-      lineinfile: 
-        dest=/etc/apache2/sites-enabled/000-default.conf 
-        regexp="(.)+DocumentRoot /var/www/html"
-        line="DocumentRoot /var/www/wordpress"
+    - name: update default apache site
+      lineinfile:
+        dest: /etc/apache2/sites-enabled/000-default.conf
+        regexp: "(.)+DocumentRoot /var/www/html"
+        line: "DocumentRoot /var/www/wordpress"
 
-    - name: restart mysql
-      service: name=mysql state=restarted
+    - name: copy WordPress config file
+      template:
+        src: ./templates/wp-config.php
+        dest: /var/www/wordpress/
+        force: yes
 
-    - name: Copy WordPress config file
-      template: src=/templates/wp-config.php dest=/var/www/wordpress/ force=yes
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
 
+  
