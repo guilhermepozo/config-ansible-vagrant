@@ -50,7 +50,7 @@
         - ::1
         - localhost
     # Etapa 4 - Modificar arquivo de configuração MySQL, habilitando conexões remotas 
-    - name: ppdate mysql cnf file to allow remote connections
+    - name: update mysql cnf file to allow remote connections
       lineinfile:
         dest: /etc/mysql/mysql.conf.d/mysqld.cnf
         regexp: "{{ item.regexp }}"
