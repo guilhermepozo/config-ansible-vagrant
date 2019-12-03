@@ -39,6 +39,10 @@ Depois de conectar na máquina virtual **workspace**:
 
 Após a execução do playbook, teste a instalação do Wordpress em http://localhost:7070/
 
+# Observações
+
+O par de chaves presentes em: *sared/ssh* são usadas para estabelecer uma relação de confiança entre mas máquinas virtuais, somente para demostração, caso ache necessário gere outro par.
+
 # Considerações
 
 Os assuntos cobertos são suficientes pra dar introdução aos principios básicos de Ansible: automações simples, diretas e não reutilzátveis.
