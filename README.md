@@ -41,7 +41,7 @@ Após a execução do playbook, teste a instalação do Wordpress em http://loca
 
 # Observações
 
-O par de chaves presentes em: *sared/ssh* são usadas para estabelecer uma relação de confiança entre mas máquinas virtuais, somente para demostração, caso ache necessário gere outro par.
+O par de chaves presentes em: *sared/ssh* são usadas para estabelecer uma relação de confiança entre as máquinas virtuais, somente para demonstração, caso ache necessário gere outro par.
 
 # Considerações
 
