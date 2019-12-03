@@ -59,4 +59,4 @@ cultural focada em pessoas é o ponto chave.
 
 - [ ] Criar playbooks mais inteligentes que tratem erros e condições.
 - [ ] Implementar utilizando roles.
-- [ ] Criar material avançado contendo assuntos ainda não abordados.
+- [ ] Criar material avançado contendo assuntos ainda não abordados do Ansible.
