@@ -1,18 +1,18 @@
 #  Introdução ao Ansible e Vagrant
 
-## OBJETIVO
+# OBJETIVO
 
 Cobrir os conhecimentos básicos de Ansible e Vagrant visando dar liberdade para testa e praticar novas técnologias de forma rápida e segura em ambiente local. 
 
-## PÚBLICO ALVO
+# PÚBLICO ALVO
 
 Profisionais de TI das diversas áreas e disciplinas que precisam executar tarefas administrativas, bem como aqueles que estão iniciando e tendo o primeiro contato com automação de infraestrutura.
 
-## SOBRE
+# SOBRE
 
 Conteúdo criado para incentivar o estudo e o compartilhamento de conhecimento dentro e fora da empresa, despertar o interesse em procurar ferramentas e processos mais eficientes que possam melhorar a forma como trabalhamos. Com isso iremos gastar mais tempo planejando e menos tempo executando tarefas manuais repetitivas suscetíveis a falhas, diminuindo o risco e aumentando qualidade nor serviços e entrega
 
-## REQUISITOS
+# REQUISITOS
 
 - Computador com acesso à internet.
 - 4 GB de memória RAM.
@@ -20,7 +20,7 @@ Conteúdo criado para incentivar o estudo e o compartilhamento de conhecimento d
 - Código exemplo do projeto, disponível em: https://github.com/guilhermepozo/config-ansible-vagrant
 
 
-## Considerações
+# Considerações
 
 Os assuntos cobertos são suficientes pra dar introdução aos principios básicos de Ansible: automações simples, diretas e não reutilzátveis.
 
