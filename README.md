@@ -2,7 +2,7 @@
 
 ## OBJETIVO
 
-Cobrir os conhecimentos básicos de Ansible e Vagrant visando dar liberdade para testa e praticar novas técnologias de forma rápida e segura em ambiente Windows local. 
+Cobrir os conhecimentos básicos de Ansible e Vagrant visando dar liberdade para testa e praticar novas técnologias de forma rápida e segura em ambiente local. 
 
 ## PÚBLICO ALVO
 
@@ -14,8 +14,6 @@ Conteúdo criado para incentivar o estudo e o compartilhamento de conhecimento d
 
 ## REQUISITOS
 
-
-- Sistema Operacional Windows 10 (Exemplo de como utilizar windows, presente no dia a dia tanto de curiosos como das corporações mais tradicionais).
 - Computador com acesso à internet.
 - 4 GB de memória RAM.
 - Editor de texto (Visual Studio Code, Atom, Notepad ++ ...)
