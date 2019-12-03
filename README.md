@@ -21,7 +21,7 @@ Conteúdo criado para incentivar o estudo e o compartilhamento de conhecimento d
 
 # Como executar
 
-### Máquina host do virtualbox e vagrant
+Na máquina host do virtualbox e vagrant:
     
     git clone https://github.com/guilhermepozo/config-ansible-vagrant.git
 
