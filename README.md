@@ -35,7 +35,7 @@ Na máquina host do virtualbox e vagrant:
   
 Depois de conectar na máquina virtual **workspace**:
 
-    ansible-playbook config-ansible-vagrant/shared/ansible/playbook-implementation/config.yml -v
+    ansible-playbook shared/ansible/playbook-implementation/config.yml -v
 
 Após a execução do playbook, teste a instalação do Wordpress em http://localhost:7070/
 
