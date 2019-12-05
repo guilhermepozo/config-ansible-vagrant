@@ -24,7 +24,7 @@ Vagrant.configure("2") do |config|
             node.vm.network "private_network", ip: host[:ip]
 
             # CONFIGURANDO NOME COM NOME DECLARADO ANTERIORMENTE (ARRAY DE OBJETOS "hosts" - LINHA 2) 
-            node.vm.provider :virtualbox do |vb|
+            node.vm.provider "virtualbox" do |vb|
                 vb.name = host[:name]
             end
 
